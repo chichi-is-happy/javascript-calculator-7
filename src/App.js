@@ -18,7 +18,13 @@ class App {
 
   calculator(input) {
     this.validateInput(input);
-    return `결과 : ${input}`;
+    if (this.isDefaultDelimiter(input)) {
+      console.log('디폴트 구분자');
+      return `결과 : ${result}`;
+    } else if (this.isCustomDelimiter(input)) {
+      console.log('커스텀 구분자');
+      return `결과 : ${result}`;
+    }
   }
 
   isEmptyString(numbers) {
