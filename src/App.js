@@ -23,10 +23,12 @@ class App {
     if (this.isDefaultDelimiter(input)) {
       console.log('디폴트 구분자');
       const numbers = this.splitByDefaultDelimiter(input);
+      const result = this.sumNumbers(numbers);
       return `결과 : ${result}`;
     } else if (this.isCustomDelimiter(input)) {
       console.log('커스텀 구분자');
       const numbers = this.splitByCustomDelimiter(input);
+      const result = this.sumNumbers(numbers);
       return `결과 : ${result}`;
     }
   }
@@ -89,6 +91,13 @@ class App {
 
   getSplitString(string, delimiter) {
     return string.split(delimiter);
+  }
+
+  sumNumbers(numbers) {
+    const result = numbers
+      .map((number) => Number(number))
+      .reduce((acc, cur) => acc + cur, 0);
+    return result;
   }
 
   validateInput(input) {
