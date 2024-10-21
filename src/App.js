@@ -23,11 +23,13 @@ class App {
     if (this.isDefaultDelimiter(input)) {
       console.log('디폴트 구분자');
       const numbers = this.splitByDefaultDelimiter(input);
+      this.validateNumbers(numbers);
       const result = this.sumNumbers(numbers);
       return `결과 : ${result}`;
     } else if (this.isCustomDelimiter(input)) {
       console.log('커스텀 구분자');
       const numbers = this.splitByCustomDelimiter(input);
+      this.validateNumbers(numbers);
       const result = this.sumNumbers(numbers);
       return `결과 : ${result}`;
     }
@@ -107,6 +109,17 @@ class App {
     if (!this.isDefaultDelimiter(input) && !this.isCustomDelimiter(input)) {
       throw new Error(ERROR_MESSAGES.MISSING_DELIMITER);
     }
+  }
+
+  validateNumbers(numbers) {
+    numbers.forEach((number) => {
+      if (number < 0) {
+        throw new Error(ERROR_MESSAGES.NEGATIVE_NUMBER);
+      }
+      if (Number.isNaN(number)) {
+        throw new Error(ERROR_MESSAGES.INVALID_INPUT);
+      }
+    });
   }
 }
 
