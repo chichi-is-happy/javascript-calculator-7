@@ -1,6 +1,7 @@
 import { PROMPT_MESSAGES, ERROR_MESSAGES } from './constants/messages.js';
 import { DEFAULT_DELIMITER } from './constants/delimiter.js';
 import { Console } from '@woowacourse/mission-utils';
+import utils from './util/utils.js';
 
 class App {
   async run() {
@@ -25,6 +26,7 @@ class App {
       return `결과 : ${result}`;
     } else if (this.isCustomDelimiter(input)) {
       console.log('커스텀 구분자');
+      const numbers = this.splitByCustomDelimiter(input);
       return `결과 : ${result}`;
     }
   }
@@ -57,6 +59,32 @@ class App {
     const regex = new RegExp(delimiter);
     const numbersArray = this.getSplitString(input, regex);
     return numbersArray;
+  }
+
+  splitByCustomDelimiter(string) {
+    const escapedString = utils.escapeRegExp(string);
+    const delimiter = this.getCustomDelimiter(escapedString);
+    const parsedNumbersString = this.getNumbersAfterNewline(escapedString);
+    const numbersArray = this.getSplitString(parsedNumbersString, delimiter);
+    return numbersArray;
+  }
+
+  getCustomDelimiter(string) {
+    const newlineIndex = this.getNewLineIndex(string);
+    if (newlineIndex !== -1) {
+      return string.slice(2, newlineIndex);
+    }
+    return null;
+  }
+
+  getNumbersAfterNewline(string) {
+    const newlineIndex = this.getNewLineIndex(string);
+    return string.slice(newlineIndex + 1);
+  }
+
+  getNewLineIndex(string) {
+    const newlineIndex = string.indexOf('\n');
+    return newlineIndex;
   }
 
   getSplitString(string, delimiter) {
