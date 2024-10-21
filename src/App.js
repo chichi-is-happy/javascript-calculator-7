@@ -21,41 +21,16 @@ class App {
   calculator(input) {
     this.validateInput(input);
     if (this.isDefaultDelimiter(input)) {
-      console.log('디폴트 구분자');
       const numbers = this.splitByDefaultDelimiter(input);
       this.validateNumbers(numbers);
       const result = this.sumNumbers(numbers);
       return `결과 : ${result}`;
     } else if (this.isCustomDelimiter(input)) {
-      console.log('커스텀 구분자');
       const numbers = this.splitByCustomDelimiter(input);
       this.validateNumbers(numbers);
       const result = this.sumNumbers(numbers);
       return `결과 : ${result}`;
     }
-  }
-
-  isEmptyString(numbers) {
-    if (!numbers || numbers.trim() === '') {
-      return true;
-    }
-  }
-
-  isDefaultDelimiter(numbers) {
-    const regex = /^[-0-9,:\s]+$/;
-    return regex.test(numbers);
-  }
-
-  isCustomDelimiter(string) {
-    return this.isStartsSlash(string) && this.isIncludesNewLine(string);
-  }
-
-  isStartsSlash(string) {
-    return string.startsWith('//');
-  }
-
-  isIncludesNewLine(string) {
-    return string.includes('\n');
   }
 
   splitByDefaultDelimiter(input) {
@@ -81,18 +56,41 @@ class App {
     return null;
   }
 
+  getSplitString(string, delimiter) {
+    return string.split(delimiter);
+  }
+
+  isStartsSlash(string) {
+    return string.startsWith('//');
+  }
+
+  isIncludesNewLine(string) {
+    return string.includes('\n');
+  }
+
   getNumbersAfterNewline(string) {
     const newlineIndex = this.getNewLineIndex(string);
     return string.slice(newlineIndex + 1);
   }
 
+  isEmptyString(numbers) {
+    if (!numbers || numbers.trim() === '') {
+      return true;
+    }
+  }
+
+  isDefaultDelimiter(numbers) {
+    const regex = /^[-0-9,:\s]+$/;
+    return regex.test(numbers);
+  }
+
+  isCustomDelimiter(string) {
+    return this.isStartsSlash(string) && this.isIncludesNewLine(string);
+  }
+
   getNewLineIndex(string) {
     const newlineIndex = string.indexOf('\n');
     return newlineIndex;
-  }
-
-  getSplitString(string, delimiter) {
-    return string.split(delimiter);
   }
 
   sumNumbers(numbers) {
