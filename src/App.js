@@ -1,4 +1,4 @@
-import { PROMPT_MESSAGES } from './constants/messages.js';
+import { PROMPT_MESSAGES, ERROR_MESSAGES } from './constants/messages.js';
 import { Console } from '@woowacourse/mission-utils';
 
 class App {
@@ -17,7 +17,40 @@ class App {
   }
 
   calculator(input) {
+    this.validateInput(input);
     return `결과 : ${input}`;
+  }
+
+  isEmptyString(numbers) {
+    if (!numbers || numbers.trim() === '') {
+      return true;
+    }
+  }
+
+  isDefaultDelimiter(numbers) {
+    const regex = /^[-0-9,:\s]+$/;
+    return regex.test(numbers);
+  }
+
+  isCustomDelimiter(string) {
+    return this.isStartsSlash(string) && this.isIncludesNewLine(string);
+  }
+
+  isStartsSlash(string) {
+    return string.startsWith('//');
+  }
+
+  isIncludesNewLine(string) {
+    return string.includes('\n');
+  }
+
+  validateInput(input) {
+    if (this.isEmptyString(input)) {
+      throw new Error(ERROR_MESSAGES.EMPTY_INPUT);
+    }
+    if (!this.isDefaultDelimiter(input) && !this.isCustomDelimiter(input)) {
+      throw new Error(ERROR_MESSAGES.MISSING_DELIMITER);
+    }
   }
 }
 
